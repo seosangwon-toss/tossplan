@@ -1,1 +1,689 @@
-# tossplan
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- 카톡 공유 시 보여지는 정보 세팅 -->
+    <meta property="og:title" content="이지은 고객님 맞춤형 보장 분석">
+    <meta property="og:description" content="서상원 어드바이저가 안내드리는 토스 플랜 리포트입니다.">
+    <meta property="og:image" content="https://i.postimg.cc/N045jnbw/1000069980.png">
+    
+    <title>이지은 고객님 맞춤형 보장 분석</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <style>
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: #f4f7fa;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .report-container {
+            max-width: 480px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            min-height: 100vh;
+            box-shadow: 0 0 40px rgba(0,0,0,0.08);
+            padding-bottom: 50px;
+        }
+        .header-gradient {
+            background: linear-gradient(135deg, #002b5b 0%, #0056b3 100%);
+        }
+        
+        /* Accordion Core Logic */
+        .accordion-item {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid #edf2f7;
+            position: relative;
+        }
+        
+        .accordion-item.active {
+            transform: scale(1.03);
+            border-color: #0056b3;
+            box-shadow: 0 15px 30px -10px rgba(0, 86, 179, 0.2);
+            z-index: 10;
+            margin-top: 12px;
+            margin-bottom: 12px;
+        }
+
+        .accordion-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.4s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .active .accordion-content {
+            grid-template-rows: 1fr;
+            opacity: 1;
+            padding-top: 16px;
+            margin-top: 16px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .inner-content {
+            overflow: hidden;
+        }
+
+        .chevron-icon {
+            transition: transform 0.4s ease;
+        }
+        .active .chevron-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Detail List Styling */
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            font-size: 11px;
+            border-bottom: 1px solid #f8fafc;
+        }
+        .detail-row:last-child { border-bottom: none; }
+        
+        .highlight-blue { color: #0056b3; font-weight: 800; }
+        .highlight-purple { color: #7c3aed; font-weight: 800; }
+        .highlight-cyan { color: #0891b2; font-weight: 800; }
+        
+        /* Info Box Styling */
+        .info-box {
+            background-color: #f8fafc;
+            border-left: 3px solid #3b82f6;
+            padding: 12px 16px;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 12px;
+        }
+        
+        /* Badge Styling */
+        .badge {
+            font-size: 9px;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 4px;
+            display: inline-block;
+        }
+        .badge-blue { background-color: #dbeafe; color: #2563eb; }
+        .badge-slate { background-color: #f1f5f9; color: #64748b; }
+        .badge-orange { background-color: #ffedd5; color: #ea580c; }
+        .badge-red { background-color: #fee2e2; color: #dc2626; }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <!-- 상단 헤더 -->
+        <header class="header-gradient p-8 pb-10 text-white rounded-b-[40px] shadow-lg relative overflow-hidden">
+            <div class="relative z-10">
+                <!-- 토스인슈어런스 로고 -->
+                <div class="mb-6 flex justify-start">
+                    <div class="bg-white/10 p-3 rounded-2xl backdrop-blur-md border border-white/20 inline-flex shadow-inner">
+                        <img src="https://i.postimg.cc/N045jnbw/1000069980.png" alt="토스인슈어런스 로고" class="h-10 sm:h-12 w-auto object-contain">
+                    </div>
+                </div>
+                
+                <div class="flex justify-between items-end mb-6">
+                    <div>
+                        <h1 class="text-2xl font-bold leading-tight mt-1">
+                            이지은 고객님<br>
+                            <span class="text-blue-300">토스플랜</span> 안내
+                        </h1>
+                        <p class="text-[10px] mt-2 opacity-60">청약번호: RQ26-26141996</p>
+                    </div>
+                    <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center border border-white/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                    </div>
+                </div>
+                
+                <div class="bg-black/20 rounded-2xl p-4 flex justify-between items-center border border-white/10 mt-2">
+                    <div class="flex items-center space-x-3">
+                        <!-- 어드바이저 프로필 이미지 -->
+                        <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-white/20 flex-shrink-0 bg-white/10">
+                            <img src="https://i.postimg.cc/K8dWJnk8/20231020-210720.jpg" alt="서상원 어드바이저" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <p class="text-[9px] opacity-60">담당 전문가</p>
+                            <p class="text-xs font-bold">서상원 어드바이저</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[9px] opacity-60">설계 기준일</p>
+                        <p class="text-xs font-medium">2026.04.20</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 핵심 요약 -->
+        <section class="px-6 -mt-6 mb-6 relative z-20">
+            <div class="bg-white rounded-3xl p-6 shadow-xl grid grid-cols-3 gap-2 border border-slate-50">
+                <div class="text-center">
+                    <p class="text-[10px] text-slate-400 font-bold mb-1">납입/만기</p>
+                    <p class="text-sm font-black text-slate-800">20년/100세</p>
+                </div>
+                <div class="text-center border-x border-slate-100">
+                    <p class="text-[10px] text-slate-400 font-bold mb-1">건강등급</p>
+                    <p class="text-sm font-black text-blue-600">10년 고지형</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-[10px] text-slate-400 font-bold mb-1">월 총 보험료</p>
+                    <p class="text-sm font-black text-blue-600">122,421원</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 필수 안내 사항 -->
+        <section class="px-6 mb-8">
+            <div class="space-y-3">
+                <div class="info-box">
+                    <div class="flex items-center mb-1">
+                        <svg class="w-3.5 h-3.5 text-blue-500 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <p class="text-[11px] font-bold text-slate-800">보험료 납입면제 및 지원 혜택</p>
+                    </div>
+                    <ul class="text-[10px] text-slate-600 space-y-1.5 leading-tight pl-5 list-disc marker:text-blue-300">
+                        <li><span class="font-bold text-slate-800">납입면제(13대B):</span> 암(유사암 제외), 뇌졸중, 급성심근경색증, 상해/질병 <span class="text-blue-600 font-bold">80% 이상 후유장해</span>, 말기폐질환 등 진단 시 이후 보험료 전액 면제</li>
+                        <li><span class="font-bold text-slate-800">유사암 납입지원:</span> 유사암(갑상선암 등) 진단 시 남은 납입기간 동안 <span class="text-blue-600 font-bold">매월 59,978원 지원</span> (연단위 확정 지급)</li>
+                    </ul>
+                </div>
+                
+                <div class="info-box border-l-orange-400 bg-orange-50/30">
+                    <div class="flex items-center mb-1">
+                        <svg class="w-3.5 h-3.5 text-orange-500 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        <p class="text-[11px] font-bold text-slate-800">면책기간 및 감액지급 안내</p>
+                    </div>
+                    <ul class="text-[10px] text-slate-600 space-y-1.5 leading-tight pl-5 list-disc marker:text-orange-300">
+                        <li><span class="font-bold text-slate-800">암 보장개시일(면책기간):</span> 암 관련 진단 및 주요치료비는 계약일로부터 <span class="text-orange-600 font-bold">90일이 지난 날의 다음날</span>부터 보장이 시작됩니다.</li>
+                        <li><span class="font-bold text-slate-800">일반암 감액 없음:</span> 위암, 폐암, 간암 등 <span class="text-blue-600 font-bold">대다수 일반암은 90일 면책만 지나면 1년 미만이어도 100% 지급</span>됩니다. (단, 유방/자궁/전립선 등 '특정소액암'만 1년 50% 감액)</li>
+                        <li><span class="font-bold text-slate-800">1년 미만 50% 감액:</span> 뇌혈관, 허혈심장, 특정소액암, 표적/중입자 치료비 및 비급여 암 주요치료비 등은 가입 후 <span class="text-orange-600 font-bold">1년 미만 발생 시 50%만 감액 지급</span>됩니다.</li>
+                    </ul>
+                </div>
+
+                <!-- 전문가 당부사항 -->
+                <div class="mt-3 bg-slate-100/80 rounded-xl p-3.5 flex items-start space-x-2 border border-slate-200 shadow-sm">
+                    <svg class="w-4 h-4 text-slate-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <p class="text-[10.5px] text-slate-600 leading-relaxed">
+                        <span class="font-bold text-slate-800">전문가의 당부:</span> 면책·감액 기간 및 보험료 납입면제 조건은 <span class="text-blue-600 font-bold">보험사 및 상품별로 상이</span>합니다. 본 리포트는 고객님의 이해를 돕기 위한 핵심 요약본이므로, 정확한 원칙과 세부 조건은 함께 전달해 드리는 <span class="font-bold text-slate-900 border-b border-slate-400">설계안(가입제안서) 원본을 반드시 교차 확인</span>해 주시기 바랍니다.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 보장 상세 리스트 -->
+        <main class="px-6 space-y-4">
+            <div class="flex justify-between items-end mb-4 px-1">
+                <h3 class="text-sm font-black text-slate-900">항목별 상세 보장 및 보험료</h3>
+                <span class="text-[9px] text-slate-400">(담보별 월납)</span>
+            </div>
+
+            <!-- 1. 암 진단비 -->
+            <div class="accordion-item bg-white rounded-2xl p-5 cursor-pointer" onclick="toggleAccordion(this)">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center text-red-500">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-800">일반암 진단비</p>
+                            <p class="text-[10px] text-slate-400">일반암은 90일 이후 감액 없이 100%</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="text-right">
+                            <span class="text-lg font-black text-slate-900 block leading-tight">2,000<span class="text-xs font-medium ml-0.5">만</span></span>
+                            <span class="text-[10px] font-bold text-slate-400">월 20,940원</span>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-300 chevron-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="accordion-content">
+                    <div class="inner-content">
+                        <div class="space-y-1">
+                            <div class="detail-row items-start">
+                                <div>
+                                    <div class="flex items-center"><span class="text-slate-600 font-bold">암 진단비 (유사암/소액암 제외)</span><span class="badge badge-slate">최초 1회</span><span class="badge badge-orange">90일 면책</span></div>
+                                    <span class="text-[10px] text-blue-600 font-bold block mt-1">※ 일반암은 90일 지나면 감액 없이 즉시 100% 지급!</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="font-bold text-slate-900 block">2,000만원</span>
+                                    <span class="text-[9px] text-slate-400">19,180원</span>
+                                </div>
+                            </div>
+                            <div class="detail-row items-start mt-2">
+                                <div>
+                                    <div class="flex items-center"><span class="text-slate-600">특정소액암 (유방/자궁/전립선/방광 등)</span><span class="badge badge-orange">1년 50% 감액</span></div>
+                                </div>
+                                <div class="text-right">
+                                    <span class="font-bold text-slate-900 block">2,000만원</span>
+                                    <span class="text-[9px] text-slate-400">포함</span>
+                                </div>
+                            </div>
+                            <div class="detail-row mt-2">
+                                <div>
+                                    <span class="text-slate-600">유사암 진단비 (갑상선 등)</span>
+                                    <span class="badge badge-slate">각 최초 1회</span>
+                                    <span class="badge badge-orange">1년 50% 감액</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="font-bold text-slate-900 block">400만원</span>
+                                    <span class="text-[9px] text-slate-400">1,760원</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. 비급여 암 주요치료비 -->
+            <div class="accordion-item bg-white rounded-2xl p-5 cursor-pointer shadow-md shadow-purple-50" onclick="toggleAccordion(this)">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-800">비급여 암 주요치료비</p>
+                            <p class="text-[10px] text-slate-400">표적/중입자 등 고가치료 집중</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="text-right">
+                            <span class="text-lg font-black text-purple-600 block leading-tight">각 2,000<span class="text-xs font-medium ml-0.5">만</span></span>
+                            <span class="text-[10px] font-bold text-slate-400">월 30,535원</span>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-300 chevron-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="accordion-content">
+                    <div class="inner-content">
+                        <!-- 핵심 통합보장 박스 -->
+                        <div class="bg-purple-50/50 p-4 rounded-xl border border-purple-100 mb-3">
+                            <div class="flex justify-between items-end mb-2 border-b border-purple-100 pb-2">
+                                <p class="text-[11px] font-bold text-purple-700 flex items-center">
+                                    <span class="w-1 h-3 bg-purple-400 rounded-full mr-2"></span>
+                                    비급여 암 주요 치료 (종합병원)
+                                </p>
+                                <span class="text-[9px] font-bold text-purple-500">통합 월 7,360원</span>
+                            </div>
+                            <div class="space-y-1 mt-2">
+                                <div class="detail-row">
+                                    <div><span class="text-slate-700">암 주요치료 (수술 시)</span><span class="badge badge-orange">90일 면책</span><span class="badge badge-orange">1년 감액</span><span class="badge badge-slate">수술 1회당</span></div>
+                                    <div class="text-right">
+                                        <span class="highlight-purple block">2,000만원</span>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div><span class="text-slate-700">암 주요치료 (항암 방사선)</span><span class="badge badge-orange">90일 면책</span><span class="badge badge-orange">1년 감액</span><span class="badge badge-slate">연 1회</span></div>
+                                    <div class="text-right">
+                                        <span class="highlight-purple block">2,000만원</span>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div><span class="text-slate-700">암 주요치료 (항암 약물)</span><span class="badge badge-orange">90일 면책</span><span class="badge badge-orange">1년 감액</span><span class="badge badge-slate">연 1회</span></div>
+                                    <div class="text-right">
+                                        <span class="highlight-purple block">2,000만원</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 추가 특수치료 박스 -->
+                        <div class="space-y-1 px-1">
+                            <p class="text-[10px] font-bold text-slate-500 mb-1 mt-3 border-b border-slate-100 pb-1">고가 표적/특수 항암 보장</p>
+                            <div class="detail-row">
+                                <div><span class="text-slate-600">표적 항암약물허가 치료비</span><span class="badge badge-orange">1년 50% 감액</span><span class="badge badge-slate">최초 1회</span></div>
+                                <div class="text-right"><span class="font-bold text-slate-800 block">5,000만원</span><span class="text-[9px] text-slate-400">11,895원</span></div>
+                            </div>
+                            <div class="detail-row">
+                                <div><span class="text-slate-600">항암 중입자 방사선 치료비</span><span class="badge badge-orange">1년 50% 감액</span><span class="badge badge-slate">최초 1회</span></div>
+                                <div class="text-right"><span class="font-bold text-slate-800 block">5,000만원</span><span class="text-[9px] text-slate-400">1,300원</span></div>
+                            </div>
+                            <div class="detail-row">
+                                <div><span class="text-slate-600">표적 항암방사선 (양성자)</span><span class="badge badge-orange">1년 50% 감액</span><span class="badge badge-slate">최초 1회</span></div>
+                                <div class="text-right"><span class="font-bold text-slate-800 block">3,000만원</span><span class="text-[9px] text-slate-400">810원</span></div>
+                            </div>
+                            <div class="detail-row">
+                                <div><span class="text-slate-600">표적 항암방사선 (세기조절)</span><span class="badge badge-orange">1년 50% 감액</span><span class="badge badge-slate">최초 1회</span></div>
+                                <div class="text-right"><span class="font-bold text-slate-800 block">2,000만원</span><span class="text-[9px] text-slate-400">2,420원</span></div>
+                            </div>
+                            <div class="detail-row">
+                                <div><span class="text-slate-600">항암방사선약물 치료 (유사암 포함)</span><span class="badge badge-orange">90일 면책</span><span class="badge badge-slate">최초 1회</span></div>
+                                <div class="text-right"><span class="font-bold text-slate-800 block">1,000만원</span><span class="text-[9px] text-slate-400">6,750원</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. 2대 진단비 -->
+            <div class="accordion-item bg-white rounded-2xl p-5 cursor-pointer" onclick="toggleAccordion(this)">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-800">뇌/심장질환 진단비</p>
+                            <p class="text-[10px] text-slate-400">가입 후 1년 미만 50% 감액 적용</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="text-right">
+                            <span class="text-lg font-black text-slate-900 block leading-tight">최대 2,000<span class="text-xs font-medium ml-0.5">만</span></span>
+                            <span class="text-[10px] font-bold text-slate-400">월 24,280원</span>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-300 chevron-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="accordion-content">
+                    <div class="inner-content">
+                        <div class="space-y-1">
+                            <div class="detail-row">
+                                <div>
+                                    <span class="text-slate-600">뇌혈관질환 진단비</span>
+                                    <span class="badge badge-slate">최초 1회</span>
+                                    <span class="badge badge-orange">1년 50% 감액</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="font-bold text-slate-900 block">2,000만원</span>
+                                    <span class="text-[9px] text-slate-400">20,040원</span>
+                                </div>
+                            </div>
+                            <div class="detail-row">
+                                <div>
+                                    <span class="text-slate-600">허혈성심장질환 진단비</span>
+                                    <span class="badge badge-slate">최초 1회</span>
+                                    <span class="badge badge-orange">1년 50% 감액</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="font-bold text-slate-900 block">1,000만원</span>
+                                    <span class="text-[9px] text-slate-400">4,240원</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. 순환계 주요치료비 -->
+            <div class="accordion-item bg-white rounded-2xl p-5 cursor-pointer shadow-md shadow-cyan-50" onclick="toggleAccordion(this)">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-50 flex items-center justify-center text-cyan-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-800">신특정순환계 주요치료</p>
+                            <p class="text-[10px] text-slate-400">수술/혈전제거/중환자 지원</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="text-right">
+                            <span class="text-lg font-black text-cyan-700 block leading-tight">각 1,000<span class="text-xs font-medium ml-0.5">만</span></span>
+                            <span class="text-[10px] font-bold text-slate-400">월 9,250원</span>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-300 chevron-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="accordion-content">
+                    <div class="inner-content">
+                        <!-- 핵심 통합보장 박스 -->
+                        <div class="bg-cyan-50/50 p-4 rounded-xl border border-cyan-100 mb-1">
+                            <div class="flex justify-between items-end mb-2 border-b border-cyan-100 pb-2">
+                                <p class="text-[11px] font-bold text-cyan-700 flex items-center">
+                                    <span class="w-1 h-3 bg-cyan-400 rounded-full mr-2"></span>
+                                    순환계 주요 보장 내역
+                                </p>
+                                <span class="badge badge-orange">1년 50% 감액</span>
+                            </div>
+                            <div class="space-y-1 mt-2">
+                                <div class="detail-row">
+                                    <div><span class="text-slate-700">순환계 치료 (수술/혈전제거)</span><span class="badge badge-slate">매회 지급</span></div>
+                                    <div class="text-right">
+                                        <span class="highlight-cyan block">1,000만원</span>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div><span class="text-slate-700">순환계 치료 (혈전용해)</span><span class="badge badge-slate">연 1회</span></div>
+                                    <div class="text-right">
+                                        <span class="highlight-cyan block">1,000만원</span>
+                                    </div>
+                                </div>
+                                <div class="detail-row items-start">
+                                    <div>
+                                        <div class="flex items-center"><span class="text-slate-700 font-bold">순환계 치료 (종합병원 중환자)</span><span class="badge badge-slate">연 1회</span></div>
+                                        <span class="text-[9px] text-cyan-600 block mt-1">※ 가입금액의 50% 한도 (1년 미만 25%)</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="font-bold text-cyan-700 block">최대 500만원</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. 질병/상해 수술비 -->
+            <div class="accordion-item bg-white rounded-2xl p-5 cursor-pointer" onclick="toggleAccordion(this)">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 5.758L5 19m0-14l4.121 4.121" /></svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-800">질병 및 상해 수술비</p>
+                            <p class="text-[10px] text-slate-400">1~5종 수술 등 규모별 지원</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="text-right">
+                            <span class="text-lg font-black text-slate-900 block leading-tight">최대 1,000<span class="text-xs font-medium ml-0.5">만</span></span>
+                            <span class="text-[10px] font-bold text-slate-400">월 34,773원</span>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-300 chevron-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="accordion-content">
+                    <div class="inner-content">
+                        <!-- 질병 수술비 파트 -->
+                        <div class="space-y-1 mb-4">
+                            <p class="text-[11px] font-bold text-emerald-700 border-b border-emerald-100 pb-1 mb-2">질병 1~5종 수술비</p>
+                            <div class="detail-row items-start">
+                                <div>
+                                    <div class="flex items-center"><span class="text-slate-600">1종 질병 수술비</span><span class="badge badge-slate">매회 지급</span></div>
+                                    <span class="text-[9px] text-slate-400 block mt-1">예: 대장 용종 제거술, 백내장, 축농증 수술 등</span>
+                                </div>
+                                <div class="text-right"><span class="font-bold text-slate-900 block">20만원</span><span class="text-[9px] text-slate-400">2,464원</span></div>
+                            </div>
+                            <div class="detail-row items-start">
+                                <div>
+                                    <div class="flex items-center"><span class="text-slate-600">2종 질병 수술비</span><span class="badge badge-slate">매회 지급</span></div>
+                                    <span class="text-[9px] text-slate-400 block mt-1">예: 맹장염, 자궁/난소 수술, 편도염 수술 등</span>
+                                </div>
+                                <div class="text-right"><span class="font-bold text-slate-900 block">50만원</span><span class="text-[9px] text-slate-400">5,760원</span></div>
+                            </div>
+                            <div class="detail-row items-start">
+                                <div>
+                                    <div class="flex items-center"><span class="text-slate-600">3종 질병 수술비</span><span class="badge badge-slate">매회 지급</span></div>
+                                    <span class="text-[9px] text-slate-400 block mt-1">예: 녹내장, 디스크 관혈 수술 등</span>
+                                </div>
+                                <div class="text-right"><span class="font-bold text-slate-900 block">200만원</span><span class="text-[9px] text-slate-400">4,300원</span></div>
+                            </div>
+                            <div class="detail-row items-start">
+                                <div>
+                                    <div class="flex items-center"><span class="text-slate-600">4종 질병 수술비</span><span class="badge badge-slate">매회 지급</span></div>
+                                    <span class="text-[9px] text-slate-400 block mt-1">예: 위 절제, 간/폐/췌장 관혈 수술 등</span>
+                                </div>
+                                <div class="text-right"><span class="font-bold text-slate-900 block">500만원</span><span class="text-[9px] text-slate-400">840원</span></div>
+                            </div>
+                            <div class="detail-row items-start">
+                                <div>
+                                    <div class="flex items-center"><span class="text-slate-600 font-bold">5종 질병 수술비</span><span class="badge badge-slate">매회 지급</span></div>
+                                    <span class="text-[9px] text-slate-400 block mt-1">예: 뇌/심장 개복 및 개두술, 장기 이식 등</span>
+                                </div>
+                                <div class="text-right"><span class="font-bold text-emerald-600 block">1,000만원</span><span class="text-[9px] text-slate-400">13,280원</span></div>
+                            </div>
+                        </div>
+
+                        <!-- 상해 수술비 파트 -->
+                        <div class="space-y-1 mb-4">
+                            <p class="text-[11px] font-bold text-blue-700 border-b border-blue-100 pb-1 mb-2 mt-3">상해 1~5종 수술비</p>
+                            <div class="detail-row items-start">
+                                <div>
+                                    <div class="flex items-center"><span class="text-slate-600">일반 상해 수술비</span><span class="badge badge-slate">매회 지급</span></div>
+                                </div>
+                                <div class="text-right"><span class="font-bold text-slate-900 block">100만원</span><span class="text-[9px] text-slate-400">5,200원</span></div>
+                            </div>
+                            <div class="detail-row items-start">
+                                <div>
+                                    <div class="flex items-center"><span class="text-slate-600">1종 상해 수술비</span><span class="badge badge-slate">매회 지급</span></div>
+                                    <span class="text-[9px] text-slate-400 block mt-1">예: 손/발가락 골절 수술, 아킬레스건 봉합 등</span>
+                                </div>
+                                <div class="text-right"><span class="font-bold text-slate-900 block">20만원</span><span class="text-[9px] text-slate-400">364원</span></div>
+                            </div>
+                            <div class="detail-row items-start">
+                                <div>
+                                    <div class="flex items-center"><span class="text-slate-600">2종 상해 수술비</span><span class="badge badge-slate">매회 지급</span></div>
+                                    <span class="text-[9px] text-slate-400 block mt-1">예: 팔/다리/쇄골 골절 철심 삽입술 등</span>
+                                </div>
+                                <div class="text-right"><span class="font-bold text-slate-900 block">50만원</span><span class="text-[9px] text-slate-400">1,455원</span></div>
+                            </div>
+                            <div class="detail-row items-start">
+                                <div>
+                                    <div class="flex items-center"><span class="text-slate-600">3종 상해 수술비</span><span class="badge badge-slate">매회 지급</span></div>
+                                    <span class="text-[9px] text-slate-400 block mt-1">예: 십자인대 파열 재건술, 안면골 수술 등</span>
+                                </div>
+                                <div class="text-right"><span class="font-bold text-slate-900 block">200만원</span><span class="text-[9px] text-slate-400">1,020원</span></div>
+                            </div>
+                            <div class="detail-row items-start">
+                                <div>
+                                    <div class="flex items-center"><span class="text-slate-600">4종 상해 수술비</span><span class="badge badge-slate">매회 지급</span></div>
+                                    <span class="text-[9px] text-slate-400 block mt-1">예: 체내 장기 파열 개복수술 등</span>
+                                </div>
+                                <div class="text-right"><span class="font-bold text-slate-900 block">500만원</span><span class="text-[9px] text-slate-400">40원</span></div>
+                            </div>
+                            <div class="detail-row items-start">
+                                <div>
+                                    <div class="flex items-center"><span class="text-slate-600 font-bold">5종 상해 수술비</span><span class="badge badge-slate">매회 지급</span></div>
+                                    <span class="text-[9px] text-slate-400 block mt-1">예: 심한 뇌손상(개두술), 심장 파열 수술 등</span>
+                                </div>
+                                <div class="text-right"><span class="font-bold text-blue-600 block">1,000만원</span><span class="text-[9px] text-slate-400">50원</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. 기타 보장 -->
+            <div class="accordion-item bg-slate-50 rounded-2xl p-5 cursor-pointer shadow-sm border border-slate-200" onclick="toggleAccordion(this)">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-slate-200 flex items-center justify-center text-slate-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-800">기타 보장 내역 전체보기</p>
+                            <p class="text-[10px] text-slate-500">사망/후유장해, 납입면제 지원 등</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="text-right">
+                            <span class="text-[11px] font-bold text-slate-600 block mb-0.5">상세확인</span>
+                            <span class="text-[10px] font-bold text-slate-400">월 2,643원</span>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 chevron-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="accordion-content">
+                    <div class="inner-content">
+                        <div class="space-y-4 pt-2">
+                            <div class="space-y-1">
+                                <p class="text-[11px] font-bold text-slate-800 border-b border-slate-200 pb-1 mb-2">기타 추가 보장</p>
+                                <div class="detail-row">
+                                    <div><span class="text-slate-600">일반 상해 사망</span></div>
+                                    <div class="text-right"><span class="font-bold text-slate-900 block">100만원</span><span class="text-[9px] text-slate-400">35원</span></div>
+                                </div>
+                                <div class="detail-row">
+                                    <div><span class="text-slate-600">일반 상해 후유장해 (20-100%)</span></div>
+                                    <div class="text-right"><span class="font-bold text-slate-900 block">100만원</span><span class="text-[9px] text-slate-400">50원</span></div>
+                                </div>
+                                <div class="detail-row">
+                                    <div><span class="text-slate-600">보험료 납입면제 대상 보장</span><span class="badge badge-slate">최초 1회</span></div>
+                                    <div class="text-right"><span class="font-bold text-slate-900 block">10만원</span><span class="text-[9px] text-slate-400">93원</span></div>
+                                </div>
+                                <div class="detail-row">
+                                    <div><span class="text-slate-600">유사암 진단 납입지원 보장</span><span class="badge badge-slate">최초 1회</span></div>
+                                    <div class="text-right"><span class="font-bold text-blue-600 block">월 59,978원</span><span class="text-[9px] text-slate-400">2,465원</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 푸터 메시지 -->
+        <footer class="px-6 mt-10 mb-10">
+            <div class="bg-slate-900 p-8 rounded-[32px] text-white shadow-xl relative overflow-hidden">
+                <div class="relative z-10">
+                    <p class="text-[10px] font-bold text-blue-400 mb-2 uppercase tracking-widest">Expert's Opinion</p>
+                    <h4 class="text-lg font-bold mb-4 italic">"일반암은 감액 없이 100% 보장하는 압도적인 플랜입니다."</h4>
+                    <p class="text-[12px] leading-relaxed opacity-80 font-light mb-2">
+                        이지은 고객님, 이번 KB손해보험 10년 건강고지형 플랜의 가장 큰 장점은 위암, 대장암, 간암, 폐암 등 <strong>대부분의 일반암이 1년 미만 감액 없이 90일 면책기간만 지나면 즉시 100% 보장</strong>된다는 점입니다. (특정소액암 제외)
+                    </p>
+                    <p class="text-[12px] leading-relaxed opacity-80 font-light">
+                        광범위한 1~5종 수술비 특약과 함께 중입자, 세기조절, 양성자 등 수천만 원이 넘는 고가의 최신 암 치료를 지원하여 평생의 가장 든든한 의료 방어막이 되어 드릴 것입니다.
+                    </p>
+                </div>
+            </div>
+            <p class="text-center text-[10px] text-slate-400 mt-6 font-medium">Copyright © 2026 Toss Insurance Advisor Seo Sang-won</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleAccordion(element) {
+            const isActive = element.classList.contains('active');
+            
+            // 모든 항목 닫기
+            document.querySelectorAll('.accordion-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // 클릭한 항목이 닫혀있었다면 열기
+            if (!isActive) {
+                element.classList.add('active');
+                
+                // 열릴 때 상단으로 부드럽게 스크롤
+                setTimeout(() => {
+                    const offset = 80;
+                    const bodyRect = document.body.getBoundingClientRect().top;
+                    const elementRect = element.getBoundingClientRect().top;
+                    const elementPosition = elementRect - bodyRect;
+                    const offsetPosition = elementPosition - offset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }, 300);
+            }
+        }
+    </script>
+</body>
+</html>
