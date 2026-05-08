@@ -6,7 +6,8 @@
     <!-- 카톡 공유 시 보여지는 정보 세팅 -->
     <meta property="og:title" content="이지은 고객님 맞춤형 보장 분석">
     <meta property="og:description" content="서상원 어드바이저가 안내드리는 토스 플랜 리포트입니다.">
-    <meta property="og:image" content="https://i.postimg.cc/N045jnbw/1000069980.png">
+    <!-- 썸네일 이미지 (외부 차단 방지를 위해 토스 공식 이미지 활용) -->
+    <meta property="og:image" content="https://static.toss.im/assets/homepage/newtoss/new_toss_logo_blue.png">
     
     <title>이지은 고객님 맞춤형 보장 분석</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -84,10 +85,6 @@
         }
         .detail-row:last-child { border-bottom: none; }
         
-        .highlight-blue { color: #0056b3; font-weight: 800; }
-        .highlight-purple { color: #7c3aed; font-weight: 800; }
-        .highlight-cyan { color: #0891b2; font-weight: 800; }
-        
         /* Info Box Styling */
         .info-box {
             background-color: #f8fafc;
@@ -109,7 +106,6 @@
         .badge-blue { background-color: #dbeafe; color: #2563eb; }
         .badge-slate { background-color: #f1f5f9; color: #64748b; }
         .badge-orange { background-color: #ffedd5; color: #ea580c; }
-        .badge-red { background-color: #fee2e2; color: #dc2626; }
     </style>
 </head>
 <body>
@@ -117,10 +113,11 @@
         <!-- 상단 헤더 -->
         <header class="header-gradient p-8 pb-10 text-white rounded-b-[40px] shadow-lg relative overflow-hidden">
             <div class="relative z-10">
-                <!-- 토스인슈어런스 로고 -->
+                <!-- 영구적으로 깨지지 않는 CSS 기반 토스인슈어런스 로고 -->
                 <div class="mb-6 flex justify-start">
-                    <div class="bg-white/10 p-3 rounded-2xl backdrop-blur-md border border-white/20 inline-flex shadow-inner">
-                        <img src="https://i.postimg.cc/N045jnbw/1000069980.png" alt="토스인슈어런스 로고" class="h-10 sm:h-12 w-auto object-contain">
+                    <div class="bg-white/10 px-4 py-2.5 rounded-2xl backdrop-blur-md border border-white/20 inline-flex shadow-inner items-baseline">
+                        <span class="text-xl font-black tracking-tighter text-white">toss</span>
+                        <span class="text-sm font-medium tracking-tight ml-1 text-white opacity-90">인슈어런스</span>
                     </div>
                 </div>
                 
@@ -141,9 +138,10 @@
                 
                 <div class="bg-black/20 rounded-2xl p-4 flex justify-between items-center border border-white/10 mt-2">
                     <div class="flex items-center space-x-3">
-                        <!-- 어드바이저 프로필 이미지 -->
-                        <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-white/20 flex-shrink-0 bg-white/10">
-                            <img src="https://i.postimg.cc/K8dWJnk8/20231020-210720.jpg" alt="서상원 어드바이저" class="w-full h-full object-cover">
+                        <!-- 어드바이저 프로필 (이미지 깨짐 시 '서' 글자 자동 노출) -->
+                        <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-white/20 flex-shrink-0 bg-blue-500 flex items-center justify-center relative">
+                            <span class="text-white text-sm font-bold absolute z-0">서</span>
+                            <img src="https://i.postimg.cc/K8dWJnk8/20231020-210720.jpg" alt="서상원 어드바이저" class="w-full h-full object-cover relative z-10" onerror="this.style.display='none'">
                         </div>
                         <div>
                             <p class="text-[9px] opacity-60">담당 전문가</p>
